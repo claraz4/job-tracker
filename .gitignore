@@ -1,0 +1,33 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+dist/
+
+# Java / Maven / Gradle
+target/
+build/
+out/
+
+# Angular
+.angular/
+coverage/
+
+# Spring Boot
+*.h2.db
+*.trace.db
