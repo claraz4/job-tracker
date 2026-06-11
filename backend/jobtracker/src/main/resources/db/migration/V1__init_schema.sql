@@ -1,0 +1,6 @@
+CREATE TABLE app_user (
+    id BIGSERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(150) NOT NULL,
+    position VARCHAR(150) NOT NULL
+);
