@@ -1,5 +1,6 @@
 package com.clara.jobtracker.common.exceptions;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -52,6 +53,28 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle("Invalid Request");
         problemDetail.setProperty("timestamp", Instant.now());
         problemDetail.setProperty("errors", fieldErrors);
+
+        return problemDetail;
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ProblemDetail handleConstraintViolationException(ConstraintViolationException exception) {
+        Map<String, String> errors = new HashMap<>();
+
+        exception.getConstraintViolations().forEach(violation -> {
+            String field = violation.getPropertyPath().toString();
+            String message = violation.getMessage();
+            errors.put(field, message);
+        });
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                "Validation failed"
+        );
+
+        problemDetail.setTitle("Invalid Request");
+        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty("errors", errors);
 
         return problemDetail;
     }
