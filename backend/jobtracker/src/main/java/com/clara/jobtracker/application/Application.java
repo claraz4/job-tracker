@@ -5,6 +5,7 @@ import com.clara.jobtracker.application.enums.Priority;
 import com.clara.jobtracker.applicationStatusHistory.ApplicationStatusHistory;
 import com.clara.jobtracker.applicationStatusHistory.enums.Status;
 import com.clara.jobtracker.application.enums.WorkMode;
+import com.clara.jobtracker.user.AppUser;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -58,6 +59,10 @@ public class Application {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private WorkMode workMode;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private AppUser user;
 
     @OneToMany(
             mappedBy = "application",
@@ -189,5 +194,13 @@ public class Application {
 
     public List<ApplicationStatusHistory> getStatusHistory() {
         return statusHistory;
+    }
+
+    public AppUser getUser() {
+        return user;
+    }
+
+    public void setUser(AppUser user) {
+        this.user = user;
     }
 }

@@ -5,6 +5,8 @@ import com.clara.jobtracker.application.dto.CreateApplicationRequestDto;
 import com.clara.jobtracker.application.dto.UpdateApplicationStatusRequestDto;
 import com.clara.jobtracker.applicationStatusHistory.ApplicationStatusHistory;
 import com.clara.jobtracker.common.exceptions.ResourceNotFoundException;
+import com.clara.jobtracker.user.AppUser;
+import com.clara.jobtracker.user.AppUserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -14,20 +16,24 @@ import java.util.List;
 @Service
 public class ApplicationService {
     private final ApplicationRepository applicationRepository;
+    private final AppUserRepository appUserRepository;
 
-    public ApplicationService(ApplicationRepository applicationRepository) {
+    public ApplicationService(ApplicationRepository applicationRepository, AppUserRepository appUserRepository) {
         this.applicationRepository = applicationRepository;
+        this.appUserRepository = appUserRepository;
     }
 
     @Transactional
-    public ApplicationResponseDto createApplication(CreateApplicationRequestDto request) {
+    public ApplicationResponseDto createApplication(Long userId, CreateApplicationRequestDto request) {
+        AppUser user = appUserRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
+
         LocalDate dateApplied = request.dateApplied();
 
         if (request.dateApplied() == null) {
             dateApplied = LocalDate.now();
         }
 
-        ApplicationStatusHistory history = new ApplicationStatusHistory(request.dateApplied(), request.currentStatus());
+        ApplicationStatusHistory history = new ApplicationStatusHistory(dateApplied, request.currentStatus());
 
         Application newApplication = new Application(
                 request.position(),
@@ -42,24 +48,29 @@ public class ApplicationService {
                 request.workMode()
         );
 
+        user.addApplication(newApplication);
         newApplication.addStatusHistory(history);
 
         Application savedApplication = applicationRepository.save(newApplication);
         return toResponse(savedApplication);
     }
 
-    public List<ApplicationResponseDto> getAllApplications() {
-        return applicationRepository.findAll().stream().map(this::toResponse).toList();
+    public List<ApplicationResponseDto> getAllApplications(Long userId) {
+        appUserRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+        return applicationRepository.findByUserId(userId).stream().map(this::toResponse).toList();
     }
 
-    public ApplicationResponseDto getApplicationById(Long id) {
-        Application application = applicationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Application not found with id " + id));
+    public ApplicationResponseDto getApplicationById(Long applicationId, Long userId) {
+        Application application = applicationRepository.findByIdAndUserId(applicationId, userId).orElseThrow(() -> new ResourceNotFoundException(
+                "Application not found with id " + applicationId + " for user " + userId
+        ));
 
         return toResponse(application);
     }
 
     @Transactional
-    public ApplicationResponseDto updateApplicationStatus(UpdateApplicationStatusRequestDto request) {
+    public ApplicationResponseDto updateApplicationStatus(Long userId, UpdateApplicationStatusRequestDto request) {
         Application application = applicationRepository.findById(request.applicationId()).orElseThrow(() -> new ResourceNotFoundException("Application not found"));
 
         application.setCurrentStatus(request.newStatus());

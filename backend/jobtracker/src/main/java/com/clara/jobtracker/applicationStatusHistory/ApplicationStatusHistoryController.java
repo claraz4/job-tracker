@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/applications/{applicationId}/status-history")
+@RequestMapping("/api/users/{userId}/applications/{applicationId}/status-history")
 public class ApplicationStatusHistoryController {
 
     private final ApplicationStatusHistoryService statusHistoryService;
@@ -19,7 +19,7 @@ public class ApplicationStatusHistoryController {
     }
 
     @GetMapping("")
-    public List<ApplicationStatusHistoryResponseDto> getHistoryForApplication(@PathVariable Long applicationId) {
-        return statusHistoryService.getHistoryForApplication(applicationId);
+    public List<ApplicationStatusHistoryResponseDto> getHistoryForApplication(@PathVariable Long applicationId, @PathVariable Long userId) {
+        return statusHistoryService.getHistoryForApplication(userId, applicationId);
     }
 }

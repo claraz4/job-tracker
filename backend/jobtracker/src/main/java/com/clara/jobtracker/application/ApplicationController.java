@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/applications")
+@RequestMapping("/api/users/{userId}/applications")
 public class ApplicationController {
 
     private final ApplicationService applicationService;
@@ -21,25 +21,25 @@ public class ApplicationController {
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public List<ApplicationResponseDto> getAllApplications() {
-        return applicationService.getAllApplications();
+    public List<ApplicationResponseDto> getAllApplications(@PathVariable Long userId) {
+        return applicationService.getAllApplications(userId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{applicationId}")
     @ResponseStatus(HttpStatus.OK)
-    public ApplicationResponseDto getApplicationById(@PathVariable Long id) {
-        return applicationService.getApplicationById(id);
+    public ApplicationResponseDto getApplicationById(@PathVariable Long applicationId, @PathVariable Long userId) {
+        return applicationService.getApplicationById(applicationId, userId);
     }
 
-    @PostMapping("/{id}/status-history")
+    @PostMapping("/{applicationId}/status-history")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApplicationResponseDto updateApplicationStatus(@Valid @RequestBody UpdateApplicationStatusRequestDto request) {
-        return applicationService.updateApplicationStatus(request);
+    public ApplicationResponseDto updateApplicationStatus(@PathVariable Long userId, @Valid @RequestBody UpdateApplicationStatusRequestDto request) {
+        return applicationService.updateApplicationStatus(userId, request);
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApplicationResponseDto createApplication(@Valid @RequestBody CreateApplicationRequestDto request) {
-        return applicationService.createApplication(request);
+    public ApplicationResponseDto createApplication(@PathVariable Long userId, @Valid @RequestBody CreateApplicationRequestDto request) {
+        return applicationService.createApplication(userId, request);
     }
 }
