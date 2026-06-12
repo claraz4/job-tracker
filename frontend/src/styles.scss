@@ -1,0 +1,63 @@
+@use "./styles/theme.scss";
+
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-base), sans-serif;
+  background-color: var(--grey-50);
+  color: var(--grey-900);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-base), sans-serif;
+  font-weight: 700;
+  color: var(--grey-900);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-h1);
+  margin-bottom: var(--margin-bottom-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-h2);
+  margin-bottom: var(--margin-bottom-h2);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+  line-height: var(--line-height-h3);
+  margin-bottom: var(--margin-bottom-h3);
+}
+
+h4 {
+  font-size: var(--font-size-h4);
+  line-height: var(--line-height-h4);
+  margin-bottom: var(--margin-bottom-h4);
+}
+
+h5 {
+  font-size: var(--font-size-h5);
+  line-height: var(--line-height-h5);
+  margin-bottom: var(--margin-bottom-h5);
+}
+
+h6 {
+  font-size: var(--font-size-h6);
+  line-height: var(--line-height-h6);
+  margin-bottom: var(--margin-bottom-h6);
+}

@@ -1,0 +1,44 @@
+<aside class="sidebar">
+  <div class="sidebar__top">
+    <div class="sidebar__brand">
+      <h1>CareerTrack</h1>
+      <p>Professional Hub</p>
+    </div>
+
+    <nav class="sidebar__nav">
+      @for (item of navItems; track item.route) {
+        <a
+          class="sidebar__nav-item"
+          [routerLink]="item.route"
+          routerLinkActive="sidebar__nav-item--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span class="material-symbols-outlined sidebar__icon">
+            {{ item.icon }}
+          </span>
+
+          <span class="sidebar__label">
+            {{ item.label }}
+          </span>
+        </a>
+      }
+    </nav>
+  </div>
+
+  <div class="sidebar__bottom">
+    <button class="sidebar__add-btn">
+      <span class="material-symbols-outlined">add</span>
+      Add New Entry
+    </button>
+
+    <div class="sidebar__user">
+      <div class="sidebar__avatar">
+      </div>
+
+      <div class="sidebar__user-info">
+        <h3>Alex Rivera</h3>
+        <p>Senior Analyst</p>
+      </div>
+    </div>
+  </div>
+</aside>
