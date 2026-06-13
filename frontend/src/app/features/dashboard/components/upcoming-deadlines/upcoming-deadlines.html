@@ -1,0 +1,35 @@
+<section class="deadlines-card">
+  <header class="deadlines-card__header">
+    <h2 class="p__grey-upper-heading">Upcoming Deadlines</h2>
+
+    <button type="button">
+      View All
+    </button>
+  </header>
+
+  <div class="deadlines-card__list">
+    @for (item of deadlines; track item.title) {
+      <article class="deadline-item">
+        <div class="deadline-item__main">
+          <div class="deadline-item__icon">
+          <span class="material-symbols-outlined">
+            {{ item.icon }}
+          </span>
+          </div>
+
+          <div class="deadline-item__content">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+          </div>
+
+          <div class="deadline-item__date">
+            <strong [class.deadline-item__date--urgent]="item.status === 'urgent'">
+              {{ item.daysLeft }}
+            </strong>
+            <span>{{ item.date }}</span>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+</section>

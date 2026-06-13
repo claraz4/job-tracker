@@ -1,0 +1,40 @@
+<section class="status-card">
+  <header class="status-card__header">
+    <h2>Status Summary</h2>
+  </header>
+
+  <div class="status-card__body">
+    <div class="status-chart">
+      <div class="status-chart__bars">
+        @for (status of statuses; track status.value) {
+          <div
+            class="status-chart__bar"
+            [class]="'status-chart__bar status-chart__bar--' + status.type"
+          >
+            <span [style.height.%]="status.value * 4"></span>
+          </div>
+        }
+      </div>
+
+      <div class="status-chart__labels">
+        @for (status of statuses; track status.label) {
+          <span>
+          {{ status.label }}
+        </span>
+        }
+      </div>
+    </div>
+
+    <div class="status-card__metrics">
+      <div>
+        <span>Success Rate</span>
+        <strong>{{ successRate }}</strong>
+      </div>
+
+      <div>
+        <span>Avg. Time</span>
+        <strong>{{ averageTime }}</strong>
+      </div>
+    </div>
+  </div>
+</section>

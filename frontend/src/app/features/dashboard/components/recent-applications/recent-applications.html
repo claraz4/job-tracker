@@ -1,0 +1,68 @@
+<section class="recent-applications">
+  <header class="recent-applications__header">
+    <h2>Recent Applications</h2>
+
+    <div class="recent-applications__actions">
+      <button type="button" aria-label="Filter applications">
+        <span class="material-symbols-outlined">filter_list</span>
+      </button>
+
+      <button type="button" aria-label="Sort applications">
+        <span class="material-symbols-outlined">sort</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="recent-applications__table">
+    <div class="recent-applications__row recent-applications__row--head">
+      <span class="p__grey-upper-heading">Company & Role</span>
+      <span class="p__grey-upper-heading">Date Applied</span>
+      <span class="p__grey-upper-heading">Status</span>
+      <span class="p__grey-upper-heading">Engagement</span>
+    </div>
+
+    @for (app of applications; track app) {
+      <div
+        class="recent-applications__row recent-applications__row--body"
+      >
+        <div class="company-cell">
+          <div class="company-cell__avatar">
+            {{ app.initials }}
+          </div>
+
+          <div>
+            <h3>{{ app.company }}</h3>
+            <p>{{ app.role }}</p>
+          </div>
+        </div>
+
+        <div class="date-cell">
+          {{ app.dateApplied }}
+        </div>
+
+        <div class="status-cell">
+        <span class="status-pill" [ngClass]="'status-pill--' + app.status">
+          {{ app.statusLabel }}
+        </span>
+        </div>
+
+        <div class="engagement-cell">
+          @for (icon of app.engagementIcons; track icon) {
+            <span
+              class="engagement-cell__icon"
+            >
+          <span class="material-symbols-outlined">
+            {{ icon }}
+          </span>
+        </span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <button class="recent-applications__load" type="button" (click)="loadMore()">
+    Load More Applications
+    <span class="material-symbols-outlined">keyboard_arrow_down</span>
+  </button>
+</section>

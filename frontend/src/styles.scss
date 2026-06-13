@@ -61,3 +61,35 @@ h6 {
   line-height: var(--line-height-h6);
   margin-bottom: var(--margin-bottom-h6);
 }
+
+.app-page {
+  min-height: 100vh;
+  display: flex;
+  background: var(--grey-50);
+  font-family: var(--font-family-base), sans-serif;
+}
+
+.app-page__sidebar {
+  width: 16rem;
+  min-height: 100vh;
+  flex-shrink: 0;
+  background: white;
+  border-right: 1px solid var(--grey-200);
+}
+
+.app-page__content {
+  flex: 1;
+  min-width: 0;
+  padding: var(--spacing-xl);
+  background: radial-gradient(circle at top left, rgba(245, 158, 11, 0.05), transparent 32%),
+  var(--grey-50);
+}
+
+.p__grey-upper-heading {
+  font-size: 0.625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--grey-600);
+  margin: 0;
+}

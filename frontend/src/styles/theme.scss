@@ -27,27 +27,52 @@
   --grey-800: #1f2937;
   --grey-900: #111827;
 
+  /* Success Colors */
+  --success-50: #f0fdf4;
+  --success-100: #dcfce7;
+  --success-200: #bbf7d0;
+  --success-300: #86efac;
+  --success-400: #4ade80;
+  --success-500: #22c55e;
+  --success-600: #16a34a;
+  --success-700: #15803d;
+  --success-800: #166534;
+  --success-900: #14532d;
+
+  /* Danger Colors */
+  --danger-50: #fef2f2;
+  --danger-100: #fee2e2;
+  --danger-200: #fecaca;
+  --danger-300: #fca5a5;
+  --danger-400: #f87171;
+  --danger-500: #ef4444;
+  --danger-600: #dc2626;
+  --danger-700: #b91c1c;
+  --danger-800: #991b1b;
+  --danger-900: #7f1d1d;
+
   /* Spacing */
   --spacing-xxxs: 0.125rem; /* 2px */
-  --spacing-xxs: 0.25rem;   /* 4px */
-  --spacing-xs: 0.5rem;     /* 8px */
-  --spacing-sm: 0.75rem;    /* 12px */
-  --spacing-md: 1rem;       /* 16px */
-  --spacing-lg: 1.5rem;     /* 24px */
-  --spacing-xl: 2rem;       /* 32px */
-  --spacing-xxl: 3rem;      /* 48px */
-  --spacing-xxxl: 4rem;     /* 64px */
+  --spacing-xxs: 0.25rem; /* 4px */
+  --spacing-xs: 0.5rem; /* 8px */
+  --spacing-sm: 0.75rem; /* 12px */
+  --spacing-md: 1rem; /* 16px */
+  --spacing-lg: 1.5rem; /* 24px */
+  --spacing-xl: 2rem; /* 32px */
+  --spacing-xxl: 3rem; /* 48px */
+  --spacing-xxxl: 4rem; /* 64px */
 
   /* Border Radius */
   --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
 
   /* Heading Font Sizes */
-  --font-size-h1: 3rem;      /* 48px */
-  --font-size-h2: 2.25rem;   /* 36px */
-  --font-size-h3: 1.875rem;  /* 30px */
-  --font-size-h4: 1.5rem;    /* 24px */
-  --font-size-h5: 1.25rem;   /* 20px */
-  --font-size-h6: 1rem;      /* 16px */
+  --font-size-h1: 3rem; /* 48px */
+  --font-size-h2: 2.25rem; /* 36px */
+  --font-size-h3: 1.875rem; /* 30px */
+  --font-size-h4: 1.5rem; /* 24px */
+  --font-size-h5: 1.25rem; /* 20px */
+  --font-size-h6: 1rem; /* 16px */
 
   /* Heading Line Heights */
   --line-height-h1: 1.1;
