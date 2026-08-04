@@ -184,19 +184,22 @@
     border-color: var(--grey-200);
   }
 
-  &--screening {
+  &--online_assessment,
+  &--phone_screen {
     background: var(--primary-50);
     color: var(--primary-700);
     border-color: var(--primary-200);
   }
 
-  &--interviewing {
+  &--technical_interview,
+  &--hr_interview,
+  &--final_interview {
     background: var(--primary-100);
     color: var(--primary-800);
     border-color: var(--primary-300);
   }
 
-  &--offer-received {
+  &--offer {
     background: var(--success-100);
     color: var(--success-700);
     border-color: var(--success-200);

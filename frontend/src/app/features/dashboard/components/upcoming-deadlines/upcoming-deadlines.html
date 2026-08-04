@@ -8,7 +8,7 @@
   </header>
 
   <div class="deadlines-card__list">
-    @for (item of deadlines; track item.title) {
+    @for (item of computedDeadlines(); track item.id) {
       <article class="deadline-item">
         <div class="deadline-item__main">
           <div class="deadline-item__icon">
@@ -26,7 +26,7 @@
             <strong [class.deadline-item__date--urgent]="item.status === 'urgent'">
               {{ item.daysLeft }}
             </strong>
-            <span>{{ item.date }}</span>
+            <span>{{ item.date | date: 'MMM d, y' | uppercase }}</span>
           </div>
         </div>
       </article>

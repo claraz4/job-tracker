@@ -2,7 +2,7 @@
   <div class="overview__header">
     <div>
       <h1>System Overview</h1>
-      <p>Tracking 24 active applications across 3 sectors.</p>
+      <p>Tracking {{ stats()?.active ?? 0 }} active applications.</p>
     </div>
 
     <button class="export-btn" type="button" (click)="exportReport()">
@@ -12,7 +12,7 @@
   </div>
 
   <div class="overview__grid">
-    @for (card of cards; track card.title) {
+    @for (card of cards(); track card.title) {
       <article class="stat-card">
         <div class="stat-card__top">
           <span class="stat-card__title p__grey-upper-heading">{{ card.title }}</span>
@@ -27,10 +27,6 @@
         <p
           class="stat-card__subtitle"
         >
-          @if (card.trend == 'up') {
-            <span class="material-symbols-outlined stat-card__mini-icon"> trending_up </span>
-          }
-
           {{ card.subtitle }}
         </p>
       </article>

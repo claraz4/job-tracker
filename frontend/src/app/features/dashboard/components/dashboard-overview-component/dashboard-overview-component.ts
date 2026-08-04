@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, inject } from '@angular/core';
+import { ApplicationApi } from '../../../applications/services/application-api';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 interface StatCard {
   title: string;
-  value: string;
-  subtitle: string;
+  value: number;
+  subtitle?: string;
   icon: string;
-  trend?: string;
 }
 
 @Component({
@@ -17,33 +17,37 @@ interface StatCard {
   styleUrl: './dashboard-overview-component.scss',
 })
 export class DashboardOverviewComponent {
-  cards: StatCard[] = [
-    {
-      title: 'Total Active',
-      value: '24',
-      subtitle: '12% from last month',
-      icon: 'layers',
-      trend: 'up',
-    },
-    {
-      title: 'Applied',
-      value: '18',
-      subtitle: 'Awaiting initial response',
-      icon: 'send',
-    },
-    {
-      title: 'Interviews',
-      value: '04',
-      subtitle: 'Next scheduled: Tomorrow',
-      icon: 'message',
-    },
-    {
-      title: 'Offers',
-      value: '02',
-      subtitle: 'Decision pending for 1',
-      icon: 'badge',
-    },
-  ];
+  private applicationApi = inject(ApplicationApi);
+  stats = toSignal(this.applicationApi.getStats(), { initialValue: null });
+
+  cards = computed<StatCard[]>(() => {
+    return [
+      {
+        title: 'Total Active',
+        value: this.stats()?.active ?? 0,
+        subtitle: 'Expecting next steps',
+        icon: 'layers',
+      },
+      {
+        title: 'Applied',
+        value: this.stats()?.applied ?? 0,
+        subtitle: 'Awaiting initial response',
+        icon: 'send',
+      },
+      {
+        title: 'Interviews',
+        value: this.stats()?.interviews ?? 0,
+        subtitle: 'To prepare for',
+        icon: 'message',
+      },
+      {
+        title: 'Offers',
+        value: this.stats()?.offers ?? 0,
+        subtitle: 'Decision pending',
+        icon: 'badge',
+      },
+    ];
+  });
 
   exportReport(): void {
     console.log('Export report clicked');

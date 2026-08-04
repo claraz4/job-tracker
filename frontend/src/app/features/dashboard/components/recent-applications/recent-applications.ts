@@ -1,61 +1,39 @@
-import { Component } from '@angular/core';
-import { NgClass } from '@angular/common';
-
-type ApplicationStatus =
-  | 'applied'
-  | 'screening'
-  | 'interviewing'
-  | 'offer-received'
-  | 'rejected'
-  | 'withdrawn';
+import { Component, computed, inject } from '@angular/core';
+import { DatePipe, NgClass } from '@angular/common';
+import { ApplicationApi } from '../../../applications/services/application-api';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { StatusType } from '../../../applications/types/StatusType';
 
 interface RecentApplication {
   company: string;
   role: string;
-  initials: string;
-  dateApplied: string;
-  status: ApplicationStatus;
-  statusLabel: string;
+  latestActivity: Date;
+  status: StatusType;
   engagementIcons: string[];
 }
 
 @Component({
   selector: 'app-recent-applications',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, DatePipe],
   templateUrl: './recent-applications.html',
   styleUrl: './recent-applications.scss',
 })
 export class RecentApplicationsComponent {
-  applications: RecentApplication[] = [
-    {
-      company: 'Stripe',
-      role: 'Full-stack Engineer',
-      initials: 'ST',
-      dateApplied: 'Oct 28, 2024',
-      status: 'interviewing',
-      statusLabel: 'Interviewing',
+  private applicationApi = inject(ApplicationApi);
+  recentApplications = toSignal(this.applicationApi.getApplications('RECENT_ACTIVITY'), {
+    initialValue: [],
+  });
+
+  applications = computed<RecentApplication[]>(() =>
+    this.recentApplications().map((application) => ({
+      company: application.company,
+      role: application.position,
+      latestActivity: application.lastActivityAt,
+      status: application.currentStatus,
       engagementIcons: ['mail', 'phone'],
-    },
-    {
-      company: 'Microsoft',
-      role: 'Azure Cloud Consultant',
-      initials: 'MS',
-      dateApplied: 'Nov 02, 2024',
-      status: 'applied',
-      statusLabel: 'Applied',
-      engagementIcons: ['calendar_month'],
-    },
-    {
-      company: 'Revolut',
-      role: 'Product Manager',
-      initials: 'RE',
-      dateApplied: 'Nov 12, 2024',
-      status: 'offer-received',
-      statusLabel: 'Offer Received',
-      engagementIcons: ['description', 'check_circle'],
-    },
-  ];
+    })),
+  );
 
   loadMore(): void {
     console.log('Load more applications');

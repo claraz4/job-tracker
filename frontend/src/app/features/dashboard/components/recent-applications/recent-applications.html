@@ -16,18 +16,18 @@
   <div class="recent-applications__table">
     <div class="recent-applications__row recent-applications__row--head">
       <span class="p__grey-upper-heading">Company & Role</span>
-      <span class="p__grey-upper-heading">Date Applied</span>
+      <span class="p__grey-upper-heading">Latest Activity</span>
       <span class="p__grey-upper-heading">Status</span>
       <span class="p__grey-upper-heading">Engagement</span>
     </div>
 
-    @for (app of applications; track app) {
+    @for (app of applications(); track app) {
       <div
         class="recent-applications__row recent-applications__row--body"
       >
         <div class="company-cell">
           <div class="company-cell__avatar">
-            {{ app.initials }}
+            {{ app.company.substring(0, 2).toUpperCase() }}
           </div>
 
           <div>
@@ -37,12 +37,12 @@
         </div>
 
         <div class="date-cell">
-          {{ app.dateApplied }}
+          {{ app.latestActivity | date: 'MMM d, y' }}
         </div>
 
         <div class="status-cell">
-        <span class="status-pill" [ngClass]="'status-pill--' + app.status">
-          {{ app.statusLabel }}
+        <span class="status-pill" [ngClass]="'status-pill--' + app.status.toLowerCase()">
+          {{ app.status.replace("_", " ") }}
         </span>
         </div>
 

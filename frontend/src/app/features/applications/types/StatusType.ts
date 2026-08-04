@@ -1,0 +1,10 @@
+export type StatusType =
+  | 'APPLIED'
+  | 'ONLINE_ASSESSMENT'
+  | 'PHONE_SCREEN'
+  | 'TECHNICAL_INTERVIEW'
+  | 'HR_INTERVIEW'
+  | 'FINAL_INTERVIEW'
+  | 'OFFER'
+  | 'REJECTED'
+  | 'WITHDRAWN';
