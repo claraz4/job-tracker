@@ -2,15 +2,17 @@ package com.clara.jobtracker.application;
 
 import com.clara.jobtracker.application.dto.*;
 import com.clara.jobtracker.application.enums.ApplicationSort;
+import com.clara.jobtracker.security.AuthenticatedUser;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users/{userId}/applications")
+@RequestMapping("/api/applications")
 public class ApplicationController {
 
     private final ApplicationService applicationService;
@@ -21,40 +23,43 @@ public class ApplicationController {
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public List<ApplicationResponseDto> getAllApplications(@PathVariable Long userId, @RequestParam(required = false, defaultValue = "CREATED") ApplicationSort sort) {
-        return applicationService.getAllApplications(userId, sort);
+    public List<ApplicationResponseDto> getAllApplications(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @RequestParam(required = false, defaultValue = "CREATED") ApplicationSort sort
+    ) {
+        return applicationService.getAllApplications(user.id(), sort);
     }
 
     @GetMapping("/{applicationId}")
     @ResponseStatus(HttpStatus.OK)
-    public ApplicationResponseDto getApplicationById(@PathVariable Long applicationId, @PathVariable Long userId) {
-        return applicationService.getApplicationById(applicationId, userId);
+    public ApplicationResponseDto getApplicationById(
+            @PathVariable Long applicationId,
+            @AuthenticationPrincipal AuthenticatedUser user
+    ) {
+        return applicationService.getApplicationById(applicationId, user.id());
     }
 
     @GetMapping("/stats")
     @ResponseStatus(HttpStatus.OK)
-    public ApplicationsStatsResponseDto getApplicationsStats(@PathVariable Long userId) {
-        return applicationService.getApplicationsStats(userId);
-    }
-
-    @GetMapping("/upcoming")
-    @ResponseStatus(HttpStatus.OK)
-    public List<UpcomingApplicationResponseDto> getUpcomingApplications(
-            @PathVariable Long userId,
-            @RequestParam(defaultValue = "false") Boolean deadlinesOnly,
-            @RequestParam(required = false) LocalDate date) {
-        return applicationService.getUpcomingApplications(userId, deadlinesOnly, date);
+    public ApplicationsStatsResponseDto getApplicationsStats(@AuthenticationPrincipal AuthenticatedUser user) {
+        return applicationService.getApplicationsStats(user.id());
     }
 
     @PostMapping("/{applicationId}/status-history")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApplicationResponseDto updateApplicationStatus(@PathVariable Long userId, @Valid @RequestBody UpdateApplicationStatusRequestDto request) {
-        return applicationService.updateApplicationStatus(userId, request);
+    public ApplicationResponseDto updateApplicationStatus(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @Valid @RequestBody UpdateApplicationStatusRequestDto request
+    ) {
+        return applicationService.updateApplicationStatus(user.id(), request);
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApplicationResponseDto createApplication(@PathVariable Long userId, @Valid @RequestBody CreateApplicationRequestDto request) {
-        return applicationService.createApplication(userId, request);
+    public ApplicationResponseDto createApplication(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @Valid @RequestBody CreateApplicationRequestDto request
+    ) {
+        return applicationService.createApplication(user.id(), request);
     }
 }

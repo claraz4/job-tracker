@@ -17,22 +17,6 @@ public class AppUserService {
         this.appUserRepository = appUserRepository;
     }
 
-    @Transactional
-    public AppUserResponseDto createUser(CreateAppUserRequestDto request) {
-        if (appUserRepository.existsByUsername(request.username())) {
-            throw new DuplicateResourceException("A user with this username already exists");
-        }
-
-        AppUser newUser = new AppUser(
-                request.username(),
-                request.name(),
-                request.position()
-        );
-
-        AppUser savedUser = appUserRepository.save(newUser);
-        return toResponse(savedUser);
-    }
-
     public List<AppUserResponseDto> getAllUsers() {
         return appUserRepository.findAll().stream().map(this::toResponse).toList();
     }

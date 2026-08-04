@@ -4,14 +4,16 @@ import com.clara.jobtracker.applicationDeadlines.dto.CreateDeadlineRequestDto;
 import com.clara.jobtracker.applicationDeadlines.dto.DeadlineDetailsResponseDto;
 import com.clara.jobtracker.applicationDeadlines.dto.DeadlineResponseDto;
 import com.clara.jobtracker.applicationDeadlines.enums.DeadlineSort;
+import com.clara.jobtracker.security.AuthenticatedUser;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users/{userId}/deadlines")
+@RequestMapping("/api/deadlines")
 public class ApplicationDeadlineController {
 
     private final ApplicationDeadlineService applicationDeadlineService;
@@ -22,14 +24,20 @@ public class ApplicationDeadlineController {
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public List<DeadlineDetailsResponseDto> getAllDeadlines(@PathVariable Long userId, @RequestParam(required = false, defaultValue = "CREATED") DeadlineSort sort) {
-        return applicationDeadlineService.getAllDeadlines(userId, sort);
+    public List<DeadlineDetailsResponseDto> getAllDeadlines(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @RequestParam(required = false, defaultValue = "CREATED") DeadlineSort sort
+    ) {
+        return applicationDeadlineService.getAllDeadlines(user.id(), sort);
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public DeadlineResponseDto createDeadline(@PathVariable Long userId, @Valid @RequestBody CreateDeadlineRequestDto request) {
-        return applicationDeadlineService.createDeadline(userId, request);
+    public DeadlineResponseDto createDeadline(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @Valid @RequestBody CreateDeadlineRequestDto request
+    ) {
+        return applicationDeadlineService.createDeadline(user.id(), request);
     }
 
 }

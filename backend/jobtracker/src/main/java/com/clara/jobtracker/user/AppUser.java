@@ -20,6 +20,9 @@ public class AppUser {
     @Column(nullable = false, length = 150)
     private String name;
 
+    @Column(nullable = false, length = 128)
+    private String password;
+
     @Column(nullable = false, length = 150)
     private String position;
 
@@ -32,10 +35,11 @@ public class AppUser {
 
     public AppUser() {}
 
-    public AppUser(String username, String name, String position) {
+    public AppUser(String username, String name, String position, String password) {
         this.username = username;
         this.name = name;
         this.position = position;
+        this.password = password;
     }
 
     public void addApplication(Application application) {
@@ -74,5 +78,13 @@ public class AppUser {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
