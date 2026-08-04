@@ -16,6 +16,7 @@ public record ApplicationResponseDto(
         Priority priority,
         Status currentStatus,
         LocalDate dateApplied,
+        LocalDate lastActivityAt,
         String notes,
         String requirements,
         WorkMode workMode

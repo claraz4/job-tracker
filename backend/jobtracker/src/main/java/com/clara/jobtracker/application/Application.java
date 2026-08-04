@@ -2,12 +2,13 @@ package com.clara.jobtracker.application;
 
 import com.clara.jobtracker.application.enums.JobType;
 import com.clara.jobtracker.application.enums.Priority;
+import com.clara.jobtracker.applicationDeadlines.ApplicationDeadline;
 import com.clara.jobtracker.applicationStatusHistory.ApplicationStatusHistory;
 import com.clara.jobtracker.applicationStatusHistory.enums.Status;
 import com.clara.jobtracker.application.enums.WorkMode;
 import com.clara.jobtracker.user.AppUser;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+        import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
@@ -51,6 +52,8 @@ public class Application {
 
     private LocalDate dateApplied;
 
+    private LocalDate lastActivityAt;
+
     private String notes;
 
     private String requirements;
@@ -71,6 +74,13 @@ public class Application {
     )
     private List<ApplicationStatusHistory> statusHistory = new ArrayList<>();
 
+    @OneToMany(
+            mappedBy = "application",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ApplicationDeadline> deadlines = new ArrayList<>();
+
     public Application() {}
 
     public Application(
@@ -81,6 +91,7 @@ public class Application {
             Priority priority,
             Status currentStatus,
             LocalDate dateApplied,
+            LocalDate lastActivityAt,
             String notes,
             String requirements,
             WorkMode workMode
@@ -92,6 +103,7 @@ public class Application {
         this.priority = priority;
         this.currentStatus = currentStatus;
         this.dateApplied = dateApplied;
+        this.lastActivityAt = lastActivityAt;
         this.notes = notes;
         this.requirements = requirements;
         this.workMode = workMode;
@@ -101,11 +113,23 @@ public class Application {
         statusHistory.add(history);
         history.setApplication(this);
         this.currentStatus = history.getStatus();
+        this.lastActivityAt = history.getDate();
     }
 
+    // TODO: need to edit the last activity at
     public void removeStatusHistory(ApplicationStatusHistory history) {
         statusHistory.remove(history);
         history.setApplication(null);
+    }
+
+    public void addDeadline(ApplicationDeadline deadline) {
+        deadlines.add(deadline);
+        deadline.setApplication(this);
+    }
+
+    public void removeDeadline(ApplicationDeadline deadline) {
+        deadlines.remove(deadline);
+        deadline.setApplication(null);
     }
 
     public Long getId() {
@@ -160,14 +184,6 @@ public class Application {
         this.currentStatus = currentStatus;
     }
 
-    public LocalDate getDateApplied() {
-        return dateApplied;
-    }
-
-    public void setDateApplied(LocalDate dateApplied) {
-        this.dateApplied = dateApplied;
-    }
-
     public String getNotes() {
         return notes;
     }
@@ -202,5 +218,25 @@ public class Application {
 
     public void setUser(AppUser user) {
         this.user = user;
+    }
+
+    public LocalDate getDateApplied() {
+        return dateApplied;
+    }
+
+    public void setDateApplied(LocalDate dateApplied) {
+        this.dateApplied = dateApplied;
+    }
+
+    public LocalDate getLastActivityAt() {
+        return lastActivityAt;
+    }
+
+    public void setLastActivityAt(LocalDate lastActivityAt) {
+        this.lastActivityAt = lastActivityAt;
+    }
+
+    public List<ApplicationDeadline> getDeadlines() {
+        return deadlines;
     }
 }

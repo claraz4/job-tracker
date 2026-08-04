@@ -13,12 +13,12 @@ public class ApplicationStatusHistoryService {
 
     private final ApplicationRepository applicationRepository;
 
-    public ApplicationStatusHistoryService(ApplicationStatusHistoryRepository statusHistoryRepository, ApplicationRepository applicationRepository) {
+    public ApplicationStatusHistoryService(ApplicationRepository applicationRepository) {
         this.applicationRepository = applicationRepository;
     }
 
     public List<ApplicationStatusHistoryResponseDto> getHistoryForApplication(Long userId, Long applicationId) {
-        Application application = applicationRepository.findByIdAndUserId(applicationId, userId)
+        Application application = applicationRepository.findByUserIdAndId(userId, applicationId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Application not found with id " + applicationId + " for user " + userId
                 ));

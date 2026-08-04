@@ -1,7 +1,6 @@
 package com.clara.jobtracker.applicationStatusHistory.enums;
 
 public enum Status {
-    SAVED,
     APPLIED,
     ONLINE_ASSESSMENT,
     PHONE_SCREEN,
