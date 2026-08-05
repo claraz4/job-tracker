@@ -1,10 +1,11 @@
 package com.clara.jobtracker.authentication;
 
-import com.clara.jobtracker.authentication.dto.LoginRequestDto;
-import com.clara.jobtracker.authentication.dto.LoginResponseDto;
-import com.clara.jobtracker.authentication.dto.RegisterRequestDto;
+import com.clara.jobtracker.authentication.dto.*;
+import com.clara.jobtracker.authentication.services.AuthService;
+import com.clara.jobtracker.security.AuthenticatedUser;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,5 +28,17 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public LoginResponseDto login(@Valid @RequestBody LoginRequestDto request) {
         return authService.login(request);
+    }
+
+    @PostMapping("/refresh")
+    @ResponseStatus(HttpStatus.OK)
+    public LoginResponseDto refresh(@Valid @RequestBody RefreshTokenRequestDto request) {
+        return authService.refreshToken(request);
+    }
+
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logout(@AuthenticationPrincipal AuthenticatedUser user) {
+        authService.logout(user.id());
     }
 }
