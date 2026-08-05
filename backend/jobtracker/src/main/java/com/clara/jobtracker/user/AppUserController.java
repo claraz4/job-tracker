@@ -2,8 +2,6 @@ package com.clara.jobtracker.user;
 
 import com.clara.jobtracker.security.AuthenticatedUser;
 import com.clara.jobtracker.user.dto.AppUserResponseDto;
-import com.clara.jobtracker.user.dto.CreateAppUserRequestDto;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

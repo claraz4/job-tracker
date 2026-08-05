@@ -1,9 +1,8 @@
 package com.clara.jobtracker.authentication.services;
 
 import com.clara.jobtracker.authentication.dto.LoginRequestDto;
-import com.clara.jobtracker.authentication.dto.LoginResponseDto;
-import com.clara.jobtracker.authentication.dto.RefreshTokenRequestDto;
 import com.clara.jobtracker.authentication.dto.RegisterRequestDto;
+import com.clara.jobtracker.authentication.models.LoginResult;
 import com.clara.jobtracker.authentication.models.RefreshToken;
 import com.clara.jobtracker.common.exceptions.DuplicateResourceException;
 import com.clara.jobtracker.security.JwtService;
@@ -32,7 +31,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public LoginResponseDto login(LoginRequestDto request) {
+    public LoginResult login(LoginRequestDto request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.username(), request.password())
         );
@@ -42,7 +41,7 @@ public class AuthService {
         String accessToken = jwtService.generateAccessToken(user.getId(), user.getUsername());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
 
-        return new LoginResponseDto(accessToken, refreshToken.getToken());
+        return new LoginResult(accessToken, refreshToken.getToken());
     }
 
     @Transactional
@@ -55,12 +54,12 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public LoginResponseDto refreshToken(RefreshTokenRequestDto request) {
-        RefreshToken refreshToken = refreshTokenService.verifyRefreshToken(request.refreshToken());
-        AppUser user = refreshToken.getUser();
+    public LoginResult refreshToken(String refreshToken) {
+        RefreshToken refreshTokenObj = refreshTokenService.verifyRefreshToken(refreshToken);
+        AppUser user = refreshTokenObj.getUser();
 
         String newAccessToken = jwtService.generateAccessToken(user.getId(), user.getUsername());
-        return new LoginResponseDto(newAccessToken, refreshToken.getToken());
+        return new LoginResult(newAccessToken, refreshTokenObj.getToken());
     }
 
     public void logout(Long userId) {

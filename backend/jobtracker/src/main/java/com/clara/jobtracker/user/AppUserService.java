@@ -1,10 +1,7 @@
 package com.clara.jobtracker.user;
 
-import com.clara.jobtracker.common.exceptions.DuplicateResourceException;
 import com.clara.jobtracker.common.exceptions.ResourceNotFoundException;
 import com.clara.jobtracker.user.dto.AppUserResponseDto;
-import com.clara.jobtracker.user.dto.CreateAppUserRequestDto;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
