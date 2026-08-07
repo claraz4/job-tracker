@@ -1,0 +1,12 @@
+<div
+  class="auth-layout"
+  [class.auth-layout--register]="isRegister"
+>
+  <div class="auth-layout__welcome">
+    <app-auth-welcome-box [isRegister]="isRegister"/>
+  </div>
+
+  <div class="auth-layout__form">
+    <router-outlet/>
+  </div>
+</div>

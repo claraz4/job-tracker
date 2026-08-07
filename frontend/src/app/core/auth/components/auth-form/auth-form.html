@@ -1,0 +1,14 @@
+<div class="auth-form__container">
+  <div class="auth-form__title">
+    <h3>{{ title() }}</h3>
+    <hr>
+  </div>
+
+  <div class="auth-form__info">
+    @for (item of fields(); track item.id) {
+      <app-auth-form-field [field]="item"/>
+    }
+  </div>
+
+  <button class="app-btn">{{ title() }}</button>
+</div>

@@ -1,0 +1,51 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.auth-layout {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.auth-layout__welcome {
+  z-index: 2;
+  width: 45%;
+}
+
+.auth-layout__form {
+  width: 55%;
+}
+
+.auth-layout__welcome,
+.auth-layout__form {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: transform 0.5s ease;
+}
+
+/* LOGIN */
+.auth-layout__welcome {
+  left: 0;
+  transform: translateX(0);
+}
+
+.auth-layout__form {
+  left: 45%;
+  transform: translateX(0);
+}
+
+/* REGISTER */
+.auth-layout--register {
+  .auth-layout__welcome {
+    transform: translateX(122.222%);
+  }
+
+  .auth-layout__form {
+    transform: translateX(-81.818%);
+  }
+}

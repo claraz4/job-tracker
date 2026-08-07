@@ -1,0 +1,41 @@
+:host {
+  flex: 1;
+  z-index: 1;
+  position: sticky;
+}
+
+.auth-form__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: var(--spacing-xxl);
+  padding-left: calc(var(--spacing-xxxl) * 2);
+  width: 75%;
+  height: 100%;
+}
+
+.auth-form {
+  &__title {
+    h3 {
+      margin-bottom: 0;
+    }
+
+    hr {
+      width: 30px;
+      height: 4px;
+      border: none;
+      background-color: var(--primary-500);
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-lg);
+  }
+}
+
+button {
+  font-size: var(--font-base-size);
+}
+

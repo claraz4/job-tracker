@@ -13,6 +13,9 @@ body {
   font-family: var(--font-family-base), sans-serif;
   background-color: var(--grey-50);
   color: var(--grey-900);
+  height: 100vh;
+  width: 100vw;
+  font-size: var(--font-base-size);
 }
 
 h1,
@@ -92,4 +95,54 @@ h6 {
   letter-spacing: 0.14em;
   color: var(--grey-600);
   margin: 0;
+}
+
+.app-btn {
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background: linear-gradient(
+    135deg,
+    var(--primary-400),
+    var(--primary-500)
+  );
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  cursor: pointer;
+  transition: transform 0.2s ease,
+  box-shadow 0.2s ease,
+  background-color 0.2s ease;
+
+  span {
+    font-size: 1.125rem;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(245, 158, 11, 0.36);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &--inverse {
+    background: white;
+    color: var(--primary-500);
+
+    &:hover {
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    }
+  }
+}
+
+input {
+  font-family: var(--font-family-base), sans-serif;
 }
