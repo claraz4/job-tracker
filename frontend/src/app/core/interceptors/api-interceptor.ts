@@ -9,7 +9,11 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
   const userId = auth.getUserId();
 
   if (userId === null) {
-    return next(req);
+    const apiReq = req.clone({
+      url: `${BASE_URL}${req.url}`,
+    });
+
+    return next(apiReq);
   }
 
   const apiReq = req.clone({

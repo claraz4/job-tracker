@@ -1,4 +1,5 @@
 import { Component, input } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 export interface AuthFormFieldElement {
   id: string;
@@ -9,10 +10,11 @@ export interface AuthFormFieldElement {
 
 @Component({
   selector: 'app-auth-form-field',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './auth-form-field.html',
   styleUrl: './auth-form-field.scss',
 })
 export class AuthFormField {
   field = input.required<AuthFormFieldElement>();
+  control = input.required<FormControl>();
 }
