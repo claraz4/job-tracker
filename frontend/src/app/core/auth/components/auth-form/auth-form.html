@@ -6,9 +6,16 @@
 
   <div class="auth-form__info">
     @for (item of fields(); track item.id) {
-      <app-auth-form-field [field]="item" [control]="authForm().controls[item.id]"/>
+      <app-auth-form-field
+        [field]="item"
+        [control]="authForm().controls[item.id]"
+        [passwordMismatch]="
+          item.id === 'confirmPassword' &&
+          authForm().hasError('passwordsMismatch') &&
+          authForm().controls['confirmPassword'].touched
+      "/>
     }
   </div>
 
-  <button type="submit" class="app-btn">{{ title() }}</button>
+  <button type="submit" class="app-btn" [disabled]="authForm().invalid">{{ title() }}</button>
 </form>

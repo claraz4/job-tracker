@@ -1,10 +1,54 @@
-<span class="material-symbols-outlined">
-  {{ field().icon }}
-</span>
+<div class="input-container"
+     [class.input-container--invalid]="control().invalid && control().touched || passwordMismatch()">
+  <span class="material-symbols-outlined">
+    {{ field().icon }}
+  </span>
 
-<input
-  [id]="field().id"
-  [type]="field().inputType"
-  [placeholder]="field().placeholder"
-  [formControl]="control()"
-/>
+  <input
+    [id]="field().id"
+    [type]="field().inputType"
+    [placeholder]="field().placeholder"
+    [formControl]="control()"
+  />
+</div>
+
+@if (control().touched && control().invalid || passwordMismatch()) {
+
+  @if (control().hasError('required')) {
+    <p class="field-error">
+      {{ `${field().id.charAt(0).toUpperCase()}${field().id.substring(1)}` }} is required.
+    </p>
+  } @else if (control().hasError('minlength')) {
+    <p class="field-error">
+      Must contain at least
+      {{ control().getError('minlength').requiredLength }}
+      characters.
+    </p>
+  } @else if (control().hasError('invalidUsername')) {
+    <p class="field-error">
+      Username must start with a letter and can only contain letters,
+      numbers, dots, and underscores.
+    </p>
+  } @else if (control().hasError('uppercase')) {
+    <p class="field-error">
+      Password must contain at least one uppercase letter.
+    </p>
+  } @else if (control().hasError('lowercase')) {
+    <p class="field-error">
+      Password must contain at least one lowercase letter.
+    </p>
+  } @else if (control().hasError('number')) {
+    <p class="field-error">
+      Password must contain at least one number.
+    </p>
+  } @else if (control().hasError('symbol')) {
+    <p class="field-error">
+      Password must contain at least one symbol.
+    </p>
+  } @else if (passwordMismatch()) {
+    <p class="field-error">
+      The passwords don't match.
+    </p>
+  }
+
+}

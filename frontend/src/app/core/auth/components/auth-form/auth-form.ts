@@ -1,9 +1,18 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { AuthFormField, AuthFormFieldElement } from '../auth-form-field/auth-form-field';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { AuthApi } from '../../services/auth-api';
 import { LoginRequestDto } from '../../models/login-request.dto';
 import { RegisterRequestDto } from '../../models/register-request.dto';
+import { strongPasswordValidator } from '../../validators/strongPasswordValidator';
+import { correctUsernameValidator } from '../../validators/correctUsernameValidator';
+import { passwordsMatchValidator } from '../../validators/passwordsMatchValidator';
 
 @Component({
   selector: 'app-auth-form',
@@ -21,12 +30,14 @@ export class AuthForm {
       icon: 'alternate_email',
       placeholder: 'Enter your username',
       inputType: 'text',
+      required: true,
     },
     {
       id: 'password',
       icon: 'lock',
       placeholder: 'Enter your password',
       inputType: 'password',
+      required: true,
     },
   ];
 
@@ -36,19 +47,38 @@ export class AuthForm {
       icon: 'person',
       placeholder: 'Enter your name',
       inputType: 'text',
+      required: true,
     },
     {
       id: 'position',
       icon: 'badge',
       placeholder: 'Enter your position',
       inputType: 'text',
+      required: true,
     },
-    ...this.loginFields,
+    {
+      id: 'username',
+      icon: 'alternate_email',
+      placeholder: 'Enter your username',
+      inputType: 'text',
+      required: true,
+      correctUsername: true,
+    },
+    {
+      id: 'password',
+      icon: 'lock',
+      placeholder: 'Enter your password',
+      inputType: 'password',
+      required: true,
+      strongPassword: true,
+      minLength: 8,
+    },
     {
       id: 'confirmPassword',
       icon: 'lock',
       placeholder: 'Confirm your password',
       inputType: 'password',
+      required: true,
     },
   ];
 
@@ -62,12 +92,33 @@ export class AuthForm {
     const controls: Record<string, FormControl<string>> = {};
 
     for (const field of this.fields()) {
+      const validators: ValidatorFn[] = [];
+
+      if (field.required) {
+        validators.push(Validators.required);
+      }
+
+      if (field.strongPassword) {
+        validators.push(strongPasswordValidator);
+      }
+
+      if (field.correctUsername) {
+        validators.push(correctUsernameValidator);
+      }
+
+      if (field.minLength) {
+        validators.push(Validators.minLength(field.minLength));
+      }
+
       controls[field.id] = new FormControl('', {
         nonNullable: true,
+        validators,
       });
     }
 
-    return new FormGroup(controls);
+    return new FormGroup(controls, {
+      validators: this.isRegister() ? [passwordsMatchValidator] : [],
+    });
   });
 
   onSubmit() {

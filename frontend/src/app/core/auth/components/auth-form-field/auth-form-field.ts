@@ -6,6 +6,11 @@ export interface AuthFormFieldElement {
   icon: string;
   placeholder: string;
   inputType: 'text' | 'password';
+
+  required?: boolean;
+  minLength?: number;
+  strongPassword?: boolean;
+  correctUsername?: boolean;
 }
 
 @Component({
@@ -17,4 +22,5 @@ export interface AuthFormFieldElement {
 export class AuthFormField {
   field = input.required<AuthFormFieldElement>();
   control = input.required<FormControl>();
+  passwordMismatch = input<boolean>();
 }

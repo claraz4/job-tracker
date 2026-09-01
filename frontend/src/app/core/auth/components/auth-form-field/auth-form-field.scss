@@ -1,10 +1,11 @@
-:host {
+.input-container {
   display: flex;
   align-items: center;
   column-gap: var(--spacing-sm);
   margin-bottom: var(--spacing-xxs);
   border-bottom: 2px var(--grey-200) solid;
   padding-bottom: var(--spacing-xxs);
+  flex-direction: row
 }
 
 input {
@@ -28,4 +29,27 @@ input::placeholder {
   'wght' 300,
   'GRAD' 0,
   'opsz' 24;
+}
+
+.field-error {
+  font-size: 0.9rem;
+  color: var(--danger-500);
+  margin-top: var(--spacing-xs);
+  margin-bottom: calc(-1 * var(--spacing-xxs));
+}
+
+.input-container--invalid {
+  border-bottom-color: var(--danger-500);
+}
+
+.input-container--invalid .material-symbols-outlined {
+  color: var(--danger-500);
+}
+
+.input-container--invalid input {
+  color: var(--danger-500);
+}
+
+.input-container--invalid input::placeholder {
+  color: var(--danger-500);
 }

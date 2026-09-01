@@ -146,3 +146,8 @@ h6 {
 input {
   font-family: var(--font-family-base), sans-serif;
 }
+
+.app-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
