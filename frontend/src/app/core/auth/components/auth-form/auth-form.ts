@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { AuthFormField, AuthFormFieldElement } from '../auth-form-field/auth-form-field';
 import {
   FormControl,
@@ -13,6 +13,10 @@ import { RegisterRequestDto } from '../../models/register-request.dto';
 import { strongPasswordValidator } from '../../validators/strongPasswordValidator';
 import { correctUsernameValidator } from '../../validators/correctUsernameValidator';
 import { passwordsMatchValidator } from '../../validators/passwordsMatchValidator';
+import { loginFields } from '../../models/login-fields';
+import { registerFields } from '../../models/register-fields';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ApiProblemDetail } from '../../models/ApiProblemDetail';
 
 @Component({
   selector: 'app-auth-form',
@@ -24,66 +28,9 @@ export class AuthForm {
   authApi = inject(AuthApi);
   isRegister = input<boolean>(false);
 
-  loginFields: AuthFormFieldElement[] = [
-    {
-      id: 'username',
-      icon: 'alternate_email',
-      placeholder: 'Enter your username',
-      inputType: 'text',
-      required: true,
-    },
-    {
-      id: 'password',
-      icon: 'lock',
-      placeholder: 'Enter your password',
-      inputType: 'password',
-      required: true,
-    },
-  ];
-
-  registerFields: AuthFormFieldElement[] = [
-    {
-      id: 'name',
-      icon: 'person',
-      placeholder: 'Enter your name',
-      inputType: 'text',
-      required: true,
-    },
-    {
-      id: 'position',
-      icon: 'badge',
-      placeholder: 'Enter your position',
-      inputType: 'text',
-      required: true,
-    },
-    {
-      id: 'username',
-      icon: 'alternate_email',
-      placeholder: 'Enter your username',
-      inputType: 'text',
-      required: true,
-      correctUsername: true,
-    },
-    {
-      id: 'password',
-      icon: 'lock',
-      placeholder: 'Enter your password',
-      inputType: 'password',
-      required: true,
-      strongPassword: true,
-      minLength: 8,
-    },
-    {
-      id: 'confirmPassword',
-      icon: 'lock',
-      placeholder: 'Confirm your password',
-      inputType: 'password',
-      required: true,
-    },
-  ];
-
+  serverError = signal<string | null>(null);
   fields = computed<AuthFormFieldElement[]>(() =>
-    this.isRegister() ? this.registerFields : this.loginFields,
+    this.isRegister() ? registerFields : loginFields,
   );
 
   title = computed<string>(() => (this.isRegister() ? 'Register' : 'Login'));
@@ -135,8 +82,9 @@ export class AuthForm {
         next: (response) => {
           console.log('Registered:', response);
         },
-        error: (error) => {
-          console.error('Register failed:', error);
+        error: (error: HttpErrorResponse) => {
+          const errorDetails = error.error as ApiProblemDetail;
+          this.serverError.set(errorDetails.detail);
         },
       });
     } else {
@@ -150,8 +98,9 @@ export class AuthForm {
         next: (response) => {
           console.log('Logged in:', response);
         },
-        error: (error) => {
-          console.error('Login failed:', error);
+        error: (error: HttpErrorResponse) => {
+          const errorDetails = error.error as ApiProblemDetail;
+          this.serverError.set(errorDetails.detail);
         },
       });
     }

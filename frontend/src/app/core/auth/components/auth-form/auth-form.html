@@ -17,5 +17,13 @@
     }
   </div>
 
-  <button type="submit" class="app-btn" [disabled]="authForm().invalid">{{ title() }}</button>
+  <div>
+    <button type="submit" class="app-btn" [disabled]="authForm().invalid">{{ title() }}</button>
+
+    @if (serverError()) {
+      <p class="field-error">
+        {{ serverError() }}
+      </p>
+    }
+  </div>
 </form>

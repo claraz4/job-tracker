@@ -151,3 +151,10 @@ input {
   opacity: 0.7;
   cursor: not-allowed;
 }
+
+.field-error {
+  font-size: 0.9rem;
+  color: var(--danger-500);
+  margin-top: var(--spacing-xs);
+  margin-bottom: calc(-1 * var(--spacing-xxs));
+}

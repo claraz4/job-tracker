@@ -31,13 +31,6 @@ input::placeholder {
   'opsz' 24;
 }
 
-.field-error {
-  font-size: 0.9rem;
-  color: var(--danger-500);
-  margin-top: var(--spacing-xs);
-  margin-bottom: calc(-1 * var(--spacing-xxs));
-}
-
 .input-container--invalid {
   border-bottom-color: var(--danger-500);
 }
