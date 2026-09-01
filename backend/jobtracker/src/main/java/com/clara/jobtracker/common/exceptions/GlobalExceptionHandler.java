@@ -3,6 +3,7 @@ package com.clara.jobtracker.common.exceptions;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -75,6 +76,22 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle("Invalid Request");
         problemDetail.setProperty("timestamp", Instant.now());
         problemDetail.setProperty("errors", errors);
+
+        return problemDetail;
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ProblemDetail handleBadCredentialsException(
+            BadCredentialsException exception
+    ) {
+        ProblemDetail problemDetail =
+                ProblemDetail.forStatusAndDetail(
+                        HttpStatus.UNAUTHORIZED,
+                        "Invalid username or password."
+                );
+
+        problemDetail.setTitle("Invalid Credentials");
+        problemDetail.setProperty("timestamp", Instant.now());
 
         return problemDetail;
     }
