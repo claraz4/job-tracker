@@ -5,11 +5,14 @@ import { LoginPage } from './core/auth/pages/login-page/login-page';
 import { RegisterPage } from './core/auth/pages/register-page/register-page';
 import { AuthenticatedLayout } from './core/layout/authenticated-layout/authenticated-layout';
 import { AuthLayout } from './core/layout/auth-layout/auth-layout';
+import { authGuard } from './core/guards/auth-guard';
+import { guestGuard } from './core/guards/guest-guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: AuthenticatedLayout,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -24,6 +27,7 @@ export const routes: Routes = [
   {
     path: '',
     component: AuthLayout,
+    canActivate: [guestGuard],
     children: [
       {
         path: 'login',

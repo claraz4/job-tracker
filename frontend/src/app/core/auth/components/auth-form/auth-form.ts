@@ -17,6 +17,8 @@ import { loginFields } from '../../models/login-fields';
 import { registerFields } from '../../models/register-fields';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiProblemDetail } from '../../models/ApiProblemDetail';
+import { Auth } from '../../../services/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth-form',
@@ -26,6 +28,9 @@ import { ApiProblemDetail } from '../../models/ApiProblemDetail';
 })
 export class AuthForm {
   authApi = inject(AuthApi);
+  authService = inject(Auth);
+  router = inject(Router);
+
   isRegister = input<boolean>(false);
 
   serverError = signal<string | null>(null);
@@ -96,7 +101,8 @@ export class AuthForm {
 
       this.authApi.login(loginRequest).subscribe({
         next: (response) => {
-          console.log('Logged in:', response);
+          this.authService.setAccessToken(response.accessToken);
+          this.router.navigate(['/']);
         },
         error: (error: HttpErrorResponse) => {
           const errorDetails = error.error as ApiProblemDetail;
